@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'intercom_export/cli'
+
+IntercomExport::Cli.new($PROGRAM_NAME, ARGV).run
