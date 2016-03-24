@@ -31,7 +31,9 @@ module IntercomExport
       end
 
       def lookup_zendesk_ticket(intercom_ticket)
-        value = zendesk_client.tickets.search(query: "external_id:#{intercom_ticket.reference.value}").first
+        value = zendesk_client.search(
+          query: "type:ticket external_id:#{intercom_ticket.reference.value}"
+        ).first
         return unless value
         IntercomExport::Model::ZendeskTicket.new(value.to_hash)
       end

@@ -14,13 +14,11 @@ RSpec.describe IntercomExport::Finder::IntercomZendesk do
 
   describe '#find' do
     let(:zendesk_user_collection) { double(ZendeskAPI::Collection) }
-    let(:zendesk_ticket_collection) { double(ZendeskAPI::Collection) }
     let(:expected_zendesk_user) { ZendeskAPI::User.new(nil, id: 123) }
     let(:expected_zendesk_ticket) { ZendeskAPI::Ticket.new(nil, id: 456) }
 
     before do
       allow(zendesk_client).to receive(:users).and_return(zendesk_user_collection)
-      allow(zendesk_client).to receive(:tickets).and_return(zendesk_ticket_collection)
     end
 
     context 'for an intercom admin' do
@@ -68,8 +66,8 @@ RSpec.describe IntercomExport::Finder::IntercomZendesk do
     context 'for an intercom conversation' do
       context 'when result exists' do
         it 'looks up using the external id' do
-          allow(zendesk_ticket_collection).to receive(:search).with(
-            query: 'external_id:intercom-conversation-123'
+          allow(zendesk_client).to receive(:search).with(
+            query: 'type:ticket external_id:intercom-conversation-123'
           ).and_return([expected_zendesk_ticket])
 
           result = subject.find(IntercomExport::Model::IntercomConversation.new('id' => '123'))
@@ -78,8 +76,8 @@ RSpec.describe IntercomExport::Finder::IntercomZendesk do
       end
       context 'when result does not exist' do
         it 'returns nil' do
-          allow(zendesk_ticket_collection).to receive(:search).with(
-            query: 'external_id:intercom-conversation-123'
+          allow(zendesk_client).to receive(:search).with(
+            query: 'type:ticket external_id:intercom-conversation-123'
           ).and_return([])
 
           result = subject.find(IntercomExport::Model::IntercomConversation.new('id' => '123'))
