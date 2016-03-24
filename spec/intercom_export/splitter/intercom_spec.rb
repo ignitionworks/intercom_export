@@ -15,6 +15,8 @@ RSpec.describe IntercomExport::Splitter::Intercom do
     before do
       Intercom::Utils.define_lightweight_class('ConversationMessage')
       Intercom::Utils.define_lightweight_class('ConversationPart')
+      Intercom::Utils.define_lightweight_class('NobodyAdmin')
+
 
       allow(intercom_client).to receive(:admins).and_return(intercom_admin_service)
       allow(intercom_client).to receive(:users).and_return(intercom_user_service)
@@ -86,7 +88,7 @@ RSpec.describe IntercomExport::Splitter::Intercom do
         created_at: 1456761281,
         updated_at: 1456829509,
         user: intercom_user_partial,
-        assignee: intercom_admin_partial,
+        assignee: Intercom::NobodyAdmin.new,
         conversation_message: message,
         open: true,
         read: true,
@@ -108,7 +110,7 @@ RSpec.describe IntercomExport::Splitter::Intercom do
           created_at: 1456761281,
           updated_at: 1456829509,
           user: IntercomExport::Reference.new('intercom-user-56c186c20655c319400233a4'),
-          assignee: IntercomExport::Reference.new('intercom-admin-266817'),
+          assignee: nil,
           conversation_message: {
             author: IntercomExport::Reference.new('intercom-user-56c186c20655c319400233a4'),
             body: 'I love this site',

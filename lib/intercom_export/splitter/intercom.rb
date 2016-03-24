@@ -35,6 +35,10 @@ module IntercomExport
           load_user(object)
         when ::Intercom::Admin
           load_admin(object)
+        when ::Intercom::NobodyAdmin
+          nil
+        else
+          raise "Unrecognised object #{object.inspect}"
         end
       end
 
@@ -52,7 +56,7 @@ module IntercomExport
         value = hash[key]
         return nil unless value
         model = model_for(value)
-        hash[key] = model.reference
+        hash[key] = model && model.reference
         model
       end
 
@@ -68,8 +72,7 @@ module IntercomExport
         dependencies.push(replace_reference!(conversation_hash, 'user'))
         dependencies.push(replace_reference!(conversation_hash, 'assignee'))
         dependencies.push(replace_reference!(conversation_hash.fetch('conversation_message'), 'author'))
-
-        dependencies.compact.uniq(&:reference)
+        dependencies.compact.uniq
       end
     end
   end
