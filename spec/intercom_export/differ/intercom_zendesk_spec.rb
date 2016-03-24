@@ -32,7 +32,7 @@ RSpec.describe IntercomExport::Differ::IntercomZendesk do
                   {
                     id: '82997204',
                     part_type: 'close',
-                    body: '<p>Hello</p>',
+                    body: '<p>Hello<br>There</p><p>Help</p>',
                     created_at: 1458221859,
                     updated_at: 1458221859,
                     notified_at: 1458221859,
@@ -84,19 +84,19 @@ RSpec.describe IntercomExport::Differ::IntercomZendesk do
                   },
                   {
                     author_id: IntercomExport::Reference.new('someadmin'),
-                    html_body: '<p>Hello</p>',
+                    value: "Hello\nThere\n\nHelp",
                     public: true,
                     created_at: '2016-03-17T13:37:39Z'
                   },
                   {
                     author_id: IntercomExport::Reference.new('someuser'),
-                    html_body: '<p>Please fix this</p>',
+                    value: 'Please fix this',
                     public: true,
                     created_at: '2016-03-17T19:01:12Z'
                   },
                   {
                     author_id: IntercomExport::Reference.new('someadmin'),
-                    html_body: '<p>Done</p>',
+                    value: 'Done',
                     public: false,
                     created_at: '2016-03-18T08:45:21Z'
                   }

@@ -67,7 +67,7 @@ module IntercomExport
             ] + intercom_conversation.conversation_parts.map { |part|
               {
                 author_id: part.fetch(:author),
-                html_body: part.fetch(:body),
+                value: html_to_ascii(part.fetch(:body)),
                 public: part.fetch(:part_type) != 'note',
                 created_at: time(part.fetch(:created_at))
               }
@@ -84,6 +84,25 @@ module IntercomExport
 
       def strip_html(html_string)
         Nokogiri::HTML(html_string).text
+      end
+
+      def html_to_ascii(html_string)
+        node = Nokogiri::HTML(html_string)
+        blocks = %w[p div address]                      # els to put newlines after
+        swaps  = { "br"=>"\n", "hr"=>"\n#{'-'*70}\n" }  # content to swap out
+        dup = node.dup                                  # don't munge the original
+
+        # Get rid of superfluous whitespace in the source
+        dup.xpath('.//text()').each{ |t| t.content=t.text.gsub(/\s+/,' ') }
+
+        # Swap out the swaps
+        dup.css(swaps.keys.join(',')).each{ |n| n.replace( swaps[n.name] ) }
+
+        # Slap a couple newlines after each block level element
+        dup.css(blocks.join(',')).each{ |n| n.after("\n\n") }
+
+        # Return the modified text content
+        dup.text.strip
       end
     end
   end
