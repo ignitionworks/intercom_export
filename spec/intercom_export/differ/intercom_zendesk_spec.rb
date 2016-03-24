@@ -76,8 +76,12 @@ RSpec.describe IntercomExport::Differ::IntercomZendesk do
                 requester_id: IntercomExport::Reference.new('someuser'),
                 assignee_id: IntercomExport::Reference.new('someadmin'),
                 subject: 'Register',
-                description: '<p>Sorry but Ive got to go</p>',
                 comments: [
+                  {
+                    author_id: IntercomExport::Reference.new('someuser'),
+                    html_body: '<p>Sorry but Ive got to go</p>',
+                    created_at: '2016-03-17T13:22:13Z'
+                  },
                   {
                     author_id: IntercomExport::Reference.new('someadmin'),
                     html_body: '<p>Hello</p>',

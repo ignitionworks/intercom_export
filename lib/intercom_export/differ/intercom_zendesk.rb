@@ -60,8 +60,11 @@ module IntercomExport
             requester_id: intercom_conversation.user,
             assignee_id: intercom_conversation.assignee,
             subject: strip_html(intercom_conversation.conversation_message.fetch(:subject)),
-            description: intercom_conversation.conversation_message.fetch(:body, nil),
-            comments: intercom_conversation.conversation_parts.map { |part|
+            comments: [
+              author_id: intercom_conversation.user,
+              html_body: intercom_conversation.conversation_message.fetch(:body),
+              created_at: time(intercom_conversation.created_at)
+            ] + intercom_conversation.conversation_parts.map { |part|
               {
                 author_id: part.fetch(:author),
                 html_body: part.fetch(:body),
