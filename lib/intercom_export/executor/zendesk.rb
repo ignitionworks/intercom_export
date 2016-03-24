@@ -30,11 +30,11 @@ module IntercomExport
       attr_reader :client, :references, :listener
 
       def import_user(details)
-        client.users.import(details)
+        client.users.create!(details)
       end
 
       def import_ticket(details)
-        client.tickets.import(details)
+        client.tickets.import!(details)
       end
 
       def save_reference(local_id, remote_id)

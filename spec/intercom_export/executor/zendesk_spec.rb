@@ -20,7 +20,7 @@ RSpec.describe IntercomExport::Executor::Zendesk do
   describe '#call' do
     context 'for users' do
       it 'creates a new record' do
-        expect(zendesk_collection_users).to receive(:import).with(
+        expect(zendesk_collection_users).to receive(:create!).with(
           external_id: '123', name: 'Theo', email: 'foo@bar.com'
         ).and_return(ZendeskAPI::User.new(zendesk_client, id: 999))
 
@@ -34,11 +34,11 @@ RSpec.describe IntercomExport::Executor::Zendesk do
 
     context 'for tickets' do
       it 'creates a new record' do
-        expect(zendesk_collection_users).to receive(:import).with(
+        expect(zendesk_collection_users).to receive(:create!).with(
           external_id: '123', name: 'Theo', email: 'foo@bar.com'
         ).and_return(ZendeskAPI::User.new(zendesk_client, id: 999))
 
-        expect(zendesk_collection_tickets).to receive(:import).with(
+        expect(zendesk_collection_tickets).to receive(:import!).with(
           subject: 'This is totally broken',
           requester_id: 999,
           comments: [
@@ -68,7 +68,7 @@ RSpec.describe IntercomExport::Executor::Zendesk do
 
     context 'for tickets with existing users' do
       it 'creates a new record' do
-        expect(zendesk_collection_tickets).to receive(:import).with(
+        expect(zendesk_collection_tickets).to receive(:import!).with(
           subject: 'This is totally broken',
           requester_id: 998,
           comments: [
