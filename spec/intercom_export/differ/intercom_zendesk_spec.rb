@@ -160,6 +160,23 @@ RSpec.describe IntercomExport::Differ::IntercomZendesk do
             }
           ])
         end
+
+        it 'copes with missing name the correct commands' do
+          expect(
+            subject.diff(
+              IntercomExport::Model::IntercomUser.new(
+                id: 1, name: nil, email: 't@example.com'
+              ),
+              nil
+            )
+          ).to eq([
+            {
+              name: :import_user,
+              details: { external_id: 'intercom-user-1', name: 't@example.com', email: 't@example.com' },
+              reference: IntercomExport::Reference.new('intercom-user-1')
+            }
+          ])
+        end
       end
     end
 

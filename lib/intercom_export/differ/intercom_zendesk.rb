@@ -43,7 +43,7 @@ module IntercomExport
           name: :import_user,
           details: {
             external_id: intercom_user.reference.value,
-            name: intercom_user.name,
+            name: intercom_user.name || intercom_user.email,
             email: intercom_user.email
           },
           reference: intercom_user.reference
