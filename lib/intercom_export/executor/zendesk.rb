@@ -3,13 +3,15 @@ module IntercomExport
     class Zendesk
       ReferenceResult = Struct.new(:id)
 
-      def initialize(client)
+      def initialize(client, listener=nil)
         @client = client
+        @listener = listener
         @references = {}
       end
 
       def call(commands)
         commands.each do |command|
+          executing(command)
           details = resolve_reference(command.fetch(:details))
           result = case command.fetch(:name)
           when :reference
@@ -25,7 +27,7 @@ module IntercomExport
 
       private
 
-      attr_reader :client, :references
+      attr_reader :client, :references, :listener
 
       def import_user(details)
         client.users.import(details)
@@ -44,6 +46,11 @@ module IntercomExport
           resolved_value = resolve_reference(value)
           details[key] = resolved_value unless resolved_value === value
         end
+      end
+
+      def executing(command)
+        return unless listener
+        listener.executing(command)
       end
 
       def resolve_reference(value)

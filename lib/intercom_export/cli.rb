@@ -9,6 +9,7 @@ require 'intercom_export/executor/dry_run'
 require 'intercom_export/finder/intercom_zendesk'
 require 'intercom_export/source/intercom_conversations'
 require 'intercom_export/splitter/intercom'
+require 'intercom_export/listener/std'
 
 module IntercomExport
   class Cli
@@ -42,11 +43,15 @@ module IntercomExport
 
     attr_reader :coordinator_class, :argv, :program_name, :stdout, :stderr
 
+    def listener
+      @listener ||= IntercomExport::Listener::Std.new(stdout: stdout, stderr: stderr)
+    end
+
     def executor
       if options.fetch(:dry_run, false)
-        IntercomExport::Executor::DryRun.new(stdout: stdout)
+        IntercomExport::Executor::DryRun.new(listener)
       else
-        IntercomExport::Executor::Zendesk.new(zendesk_client)
+        IntercomExport::Executor::Zendesk.new(zendesk_client, listener)
       end
     end
 

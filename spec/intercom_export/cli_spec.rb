@@ -56,7 +56,7 @@ RSpec.describe IntercomExport::Cli do
         .and_return(expected_intercom_zendesk_differ)
 
       allow(IntercomExport::Executor::Zendesk).to receive(:new)
-        .with(expected_zendesk_client)
+        .with(expected_zendesk_client, anything)
         .and_return(expected_zendesk_executor)
     end
 

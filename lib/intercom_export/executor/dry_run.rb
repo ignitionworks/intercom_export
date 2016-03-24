@@ -1,19 +1,19 @@
 module IntercomExport
   module Executor
     class DryRun
-      def initialize(stdout:)
-        @stdout = stdout
+      def initialize(listener)
+        @listener = listener
       end
 
       def call(commands)
         commands.each do |c|
-          stdout.puts c.inspect
+          listener.executing c
         end
       end
 
       private
 
-      attr_reader :stdout
+      attr_reader :listener
     end
   end
 end
