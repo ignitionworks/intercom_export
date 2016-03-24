@@ -78,6 +78,17 @@ RSpec.describe IntercomExport::Splitter::Intercom do
           notified_at: 1456829509,
           part_type: 'close',
           updated_at: 1456829509
+        ),
+        Intercom::ConversationPart.new(
+          assigned_to: nil,
+          attachments: [],
+          author: Intercom::User.new(id: '11111'),
+          body: nil,
+          created_at: 1458751031,
+          id: '85606347',
+          notified_at: 1458751031,
+          part_type: 'close',
+          updated_at: 1458751031
         )
       ]
     end

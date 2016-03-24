@@ -63,7 +63,9 @@ module IntercomExport
       def dependencies_for_conversation!(conversation_hash)
         dependencies = []
 
-        conversation_hash['conversation_parts'] =  conversation_hash.fetch('conversation_parts').map { |part|
+        conversation_hash['conversation_parts'] = conversation_hash.fetch('conversation_parts').select { |p|
+          p.fetch('body', nil)
+        }.map { |part|
           dependencies.push(replace_reference!(part, 'assigned_to'))
           dependencies.push(replace_reference!(part, 'author'))
           part
