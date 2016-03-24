@@ -24,33 +24,67 @@ RSpec.describe IntercomExport::Finder::IntercomZendesk do
     end
 
     context 'for an intercom admin' do
-      it 'looks up using their email' do
-        allow(zendesk_user_collection).to receive(:search).with(query: 'email:theo@example.com')
-          .and_return([expected_zendesk_user])
+      context 'when result exists' do
+        it 'looks up using their email' do
+          allow(zendesk_user_collection).to receive(:search).with(query: 'email:theo@example.com')
+            .and_return([expected_zendesk_user])
 
-        result = subject.find(IntercomExport::Model::IntercomAdmin.new('email' => 'theo@example.com'))
-        expect(result).to eq(IntercomExport::Model::ZendeskUser.new(id: 123))
+          result = subject.find(IntercomExport::Model::IntercomAdmin.new('email' => 'theo@example.com'))
+          expect(result).to eq(IntercomExport::Model::ZendeskUser.new(id: 123))
+        end
+      end
+      context 'when result does not exist' do
+        it 'returns nil' do
+          allow(zendesk_user_collection).to receive(:search).with(query: 'email:theo@example.com')
+            .and_return([])
+
+          result = subject.find(IntercomExport::Model::IntercomAdmin.new('email' => 'theo@example.com'))
+          expect(result).to be_nil
+        end
       end
     end
 
     context 'for an intercom user' do
-      it 'looks up using their email' do
-        allow(zendesk_user_collection).to receive(:search).with(query: 'email:theo@example.com')
-          .and_return([expected_zendesk_user])
+      context 'when result exists' do
+        it 'looks up using their email' do
+          allow(zendesk_user_collection).to receive(:search).with(query: 'email:theo@example.com')
+            .and_return([expected_zendesk_user])
 
-        result = subject.find(IntercomExport::Model::IntercomUser.new('email' => 'theo@example.com'))
-        expect(result).to eq(IntercomExport::Model::ZendeskUser.new(id: 123))
+          result = subject.find(IntercomExport::Model::IntercomUser.new('email' => 'theo@example.com'))
+          expect(result).to eq(IntercomExport::Model::ZendeskUser.new(id: 123))
+        end
+      end
+      context 'when result does not exist' do
+        it 'returns nil' do
+          allow(zendesk_user_collection).to receive(:search).with(query: 'email:theo@example.com')
+            .and_return([])
+
+          result = subject.find(IntercomExport::Model::IntercomUser.new('email' => 'theo@example.com'))
+          expect(result).to be_nil
+        end
       end
     end
 
     context 'for an intercom conversation' do
-      it 'looks up using the external id' do
-        allow(zendesk_ticket_collection).to receive(:search).with(
-          query: 'external_id:intercom-conversation-123'
-        ).and_return([expected_zendesk_ticket])
+      context 'when result exists' do
+        it 'looks up using the external id' do
+          allow(zendesk_ticket_collection).to receive(:search).with(
+            query: 'external_id:intercom-conversation-123'
+          ).and_return([expected_zendesk_ticket])
 
-        result = subject.find(IntercomExport::Model::IntercomConversation.new('id' => '123'))
-        expect(result).to eq(IntercomExport::Model::ZendeskTicket.new(id: 456))
+          result = subject.find(IntercomExport::Model::IntercomConversation.new('id' => '123'))
+          expect(result).to eq(IntercomExport::Model::ZendeskTicket.new(id: 456))
+        end
+      end
+      context 'when result does not exist' do
+        it 'returns nil' do
+          allow(zendesk_ticket_collection).to receive(:search).with(
+            query: 'external_id:intercom-conversation-123'
+          ).and_return([])
+
+          result = subject.find(IntercomExport::Model::IntercomConversation.new('id' => '123'))
+          expect(result).to be_nil
+        end
       end
     end
   end

@@ -25,15 +25,15 @@ module IntercomExport
       attr_reader :zendesk_client
 
       def lookup_zendesk_user(intercom_user)
-        IntercomExport::Model::ZendeskUser.new(
-          zendesk_client.users.search(query: "email:#{intercom_user.email}").first.to_hash
-        )
+        value = zendesk_client.users.search(query: "email:#{intercom_user.email}").first
+        return unless value
+        IntercomExport::Model::ZendeskUser.new(value.to_hash)
       end
 
       def lookup_zendesk_ticket(intercom_ticket)
-        IntercomExport::Model::ZendeskTicket.new(
-          zendesk_client.tickets.search(query: "external_id:#{intercom_ticket.reference.value}").first.to_hash
-        )
+        value = zendesk_client.tickets.search(query: "external_id:#{intercom_ticket.reference.value}").first
+        return unless value
+        IntercomExport::Model::ZendeskTicket.new(value.to_hash)
       end
     end
   end
