@@ -5,6 +5,7 @@ require 'zendesk_api'
 require 'intercom_export/coordinator'
 require 'intercom_export/differ/intercom_zendesk'
 require 'intercom_export/executor/zendesk'
+require 'intercom_export/executor/dry_run'
 require 'intercom_export/finder/intercom_zendesk'
 require 'intercom_export/source/intercom_conversations'
 require 'intercom_export/splitter/intercom'
@@ -31,7 +32,7 @@ module IntercomExport
         splitter: IntercomExport::Splitter::Intercom.new(intercom_client),
         finder: IntercomExport::Finder::IntercomZendesk.new(zendesk_client),
         differ: IntercomExport::Differ::IntercomZendesk.new,
-        executor: IntercomExport::Executor::Zendesk.new(zendesk_client)
+        executor: executor
       ).run
     rescue KeyError
       stderr.puts options_parser
@@ -40,6 +41,14 @@ module IntercomExport
     private
 
     attr_reader :coordinator_class, :argv, :program_name, :stdout, :stderr
+
+    def executor
+      if options.fetch(:dry_run, false)
+        IntercomExport::Executor::DryRun.new(stdout: stdout)
+      else
+        IntercomExport::Executor::Zendesk.new(zendesk_client)
+      end
+    end
 
     def zendesk_client
       @zendesk_client ||= ZendeskAPI::Client.new do |c|
@@ -71,9 +80,17 @@ module IntercomExport
 
         options_intercom(opts)
         options_zendesk(opts)
-        opts.on('-h', '--help') do
-          stderr.puts opts
-        end
+        options_generic(opts)
+      end
+    end
+
+    def options_generic(opts)
+      opts.on('-d', '--dry-run') do
+        @opts[:dry_run] = true
+      end
+
+      opts.on('-h', '--help') do
+        stderr.puts opts
       end
     end
 
