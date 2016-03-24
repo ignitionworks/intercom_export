@@ -2,6 +2,8 @@ require 'intercom_export/model/intercom_admin'
 require 'intercom_export/model/intercom_user'
 require 'intercom_export/model/intercom_conversation'
 
+require 'nokogiri'
+
 module IntercomExport
   module Differ
     class IntercomZendesk
@@ -57,7 +59,7 @@ module IntercomExport
             status: intercom_conversation.open ? 'pending' : 'closed',
             requester_id: intercom_conversation.user,
             assignee_id: intercom_conversation.assignee,
-            subject: intercom_conversation.conversation_message.fetch(:subject, nil),
+            subject: strip_html(intercom_conversation.conversation_message.fetch(:subject)),
             description: intercom_conversation.conversation_message.fetch(:body, nil),
             comments: intercom_conversation.conversation_parts.map { |part|
               {
@@ -75,6 +77,10 @@ module IntercomExport
 
       def time(posix)
         Time.at(posix).strftime('%Y-%m-%dT%H:%M:%SZ')
+      end
+
+      def strip_html(html_string)
+        Nokogiri::HTML(html_string).text
       end
     end
   end

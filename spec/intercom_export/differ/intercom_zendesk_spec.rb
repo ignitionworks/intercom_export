@@ -75,7 +75,7 @@ RSpec.describe IntercomExport::Differ::IntercomZendesk do
                 status: 'closed',
                 requester_id: IntercomExport::Reference.new('someuser'),
                 assignee_id: IntercomExport::Reference.new('someadmin'),
-                subject: '<p>Register</p>',
+                subject: 'Register',
                 description: '<p>Sorry but Ive got to go</p>',
                 comments: [
                   {
