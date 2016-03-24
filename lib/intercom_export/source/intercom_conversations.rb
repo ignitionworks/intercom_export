@@ -5,8 +5,10 @@ module IntercomExport
         @client = client
       end
 
-      def each
-        client.conversations.find_all({}).lazy.map { |c| client.conversations.find(id: c.id) }
+      include Enumerable
+
+      def each(&block)
+        client.conversations.find_all({}).lazy.map { |c| client.conversations.find(id: c.id) }.each(&block)
       end
 
       private
