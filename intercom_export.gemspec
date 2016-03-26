@@ -33,6 +33,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'nokogiri', '~> 1.6'
 
   s.add_development_dependency 'rspec', '~> 3.4'
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'rubocop'
+  s.add_development_dependency 'rake', '~> 11.1'
+  s.add_development_dependency 'rubocop', '~> 0.38'
 end
