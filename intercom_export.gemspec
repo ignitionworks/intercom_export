@@ -27,12 +27,12 @@ Gem::Specification.new do |s|
     SPEC_DIR.join('**/*')
   ].flat_map { |p| Pathname.glob(p) }.map { |p| p.relative_path_from(ROOT_DIR).to_s }
 
-  s.add_runtime_dependency 'intercom', '~> 3.4.0'
-  s.add_runtime_dependency 'zendesk_api', '~> 1.13.0'
-  s.add_runtime_dependency 'virtus', '~> 1.0.5'
-  s.add_runtime_dependency 'nokogiri', '~> 1.6.7'
+  s.add_runtime_dependency 'intercom', '~> 3.4'
+  s.add_runtime_dependency 'zendesk_api', '~> 1.13'
+  s.add_runtime_dependency 'virtus', '~> 1.0'
+  s.add_runtime_dependency 'nokogiri', '~> 1.6'
 
-  s.add_development_dependency 'rspec', '~> 3.4.0'
+  s.add_development_dependency 'rspec', '~> 3.4'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rubocop'
 end
