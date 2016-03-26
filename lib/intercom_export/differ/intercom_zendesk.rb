@@ -88,18 +88,18 @@ module IntercomExport
 
       def html_to_ascii(html_string)
         node = Nokogiri::HTML(html_string)
-        blocks = %w[p div address]                      # els to put newlines after
-        swaps  = { "br"=>"\n", "hr"=>"\n#{'-'*70}\n" }  # content to swap out
-        dup = node.dup                                  # don't munge the original
+        blocks = %w[p div address]                          # els to put newlines after
+        swaps  = { 'br' => "\n", 'hr' => "\n#{'-'*70}\n" }  # content to swap out
+        dup = node.dup                                      # don't munge the original
 
         # Get rid of superfluous whitespace in the source
-        dup.xpath('.//text()').each{ |t| t.content=t.text.gsub(/\s+/,' ') }
+        dup.xpath('.//text()').each { |t| t.content = t.text.gsub(/\s+/, ' ') }
 
         # Swap out the swaps
-        dup.css(swaps.keys.join(',')).each{ |n| n.replace( swaps[n.name] ) }
+        dup.css(swaps.keys.join(',')).each { |n| n.replace(swaps[n.name]) }
 
         # Slap a couple newlines after each block level element
-        dup.css(blocks.join(',')).each{ |n| n.after("\n\n") }
+        dup.css(blocks.join(',')).each { |n| n.after("\n\n") }
 
         # Return the modified text content
         dup.text.strip
