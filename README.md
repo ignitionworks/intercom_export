@@ -17,14 +17,14 @@ Design
 
 The `coordinator` is the heart of the import. This breaks the problem down into several discrete stages.
 
- 1. Source - This is simple an enumerable, currently this is an enumerable of all Intercom conversations
- 2. Splitter - This takes an item from the source and splits it into several `parts` that make syncying
+ 1. `source` - This is simple an enumerable, currently this is an enumerable of all Intercom conversations
+ 2. `splitter` - This takes an item from the source and splits it into several `parts` that make syncying
     easier. For instance an Intecom conversation will be split into all of the users involved in the
     conversation, and the conversation itself with the users replaced by references.
- 3. Finder - This takes a part (something in the land of Intercom), and tries to find it's equivalent in
+ 3. `finder` - This takes a part (something in the land of Intercom), and tries to find it's equivalent in
     Zendesk
- 4. Differ - This compares the Intercom part, with the search result from Zendesk and then creates commands.
- 5. Executor - This executes each command.
+ 4. `differ` - This compares the Intercom part, with the search result from Zendesk and then creates commands.
+ 5. `executor` - This executes each command, replacing references to Intercom items, with ids from Zendesk.
 
 The idea of breaking it into these components is to allow other front-ends (Intercom), to be slotted in by
 only adding a few classes. It should also be possible to slot in other back-ends (Zendesk) with a small amount
@@ -33,7 +33,9 @@ of modification.
 Tests
 -----
 
+```
 $ rspec
+```
 
 Status
 ------
