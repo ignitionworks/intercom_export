@@ -72,7 +72,7 @@ RSpec.describe IntercomExport::Differ::IntercomZendesk do
               details: {
                 external_id: 'intercom-conversation-4347072250',
                 tags: ['foo'],
-                status: 'closed',
+                status: 'solved',
                 requester_id: IntercomExport::Reference.new('someuser'),
                 assignee_id: IntercomExport::Reference.new('someadmin'),
                 subject: 'Register',

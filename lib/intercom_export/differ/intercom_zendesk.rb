@@ -56,7 +56,7 @@ module IntercomExport
           details: {
             external_id: intercom_conversation.reference.value,
             tags: intercom_conversation.tags,
-            status: intercom_conversation.open ? 'pending' : 'closed',
+            status: intercom_conversation.open ? 'pending' : 'solved',
             requester_id: intercom_conversation.user,
             assignee_id: intercom_conversation.assignee,
             subject: strip_html(intercom_conversation.conversation_message.fetch(:subject)),
