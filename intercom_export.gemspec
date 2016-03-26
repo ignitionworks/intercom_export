@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.email       = 'theo@ignition.works'
   s.homepage    = 'https://rubygems.org/gems/intercom_export'
 
-  s.bindir = BIN_DIR.relative_path_from(ROOT_DIR)
+  s.bindir = BIN_DIR.relative_path_from(ROOT_DIR).to_s
   s.executables = Pathname.glob(BIN_DIR.join('*')).map(&:basename).map(&:to_s)
   s.files = [
     ROOT_DIR.join('*.md'),
