@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.bindir = BIN_DIR.relative_path_from(ROOT_DIR)
   s.executables = Pathname.glob(BIN_DIR.join('*')).map(&:basename).map(&:to_s)
   s.files = [
+    ROOT_DIR.join('*.md'),
     BIN_DIR.join('**/*'),
     LIB_DIR.join('**/*.rb'),
     SPEC_DIR.join('**/*')
