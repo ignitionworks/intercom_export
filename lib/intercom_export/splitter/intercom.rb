@@ -47,9 +47,9 @@ module IntercomExport
       end
 
       def load_admin(object)
-        IntercomExport::Model::IntercomAdmin.new(
-          client.admins.all.find { |a| a.id == Integer(object.id) }.to_hash
-        )
+        admin = client.admins.all.find { |a| a.id == Integer(object.id) }
+        return unless admin
+        IntercomExport::Model::IntercomAdmin.new(admin.to_hash)
       end
 
       def replace_reference!(hash, key)
